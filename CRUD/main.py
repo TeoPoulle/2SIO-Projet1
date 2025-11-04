@@ -1,5 +1,5 @@
-from database.py import Database
-from maladieDAO.py import MaladieDAO
+from database import Database
+from maladie.maladieDAO import MaladieDAO
 
 # --- Exemple d'utilisation ---
 if __name__ == "__main__":
