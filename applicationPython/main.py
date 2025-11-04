@@ -1,8 +1,12 @@
-from database import Database
+from donnees.database import Database
+from mysql.connector import Error
 
 if __name__ == "__main__":
-    db = Database(host="172.27.0.50", user="grp03Admin", password="grp03Mdp",database="grp03ClinPasteur")
+    try : 
+        db = Database(host="172.27.0.50", user="grp03Admin", password="grp03Mdp",database="grp03ClinPasteur")
     
-
+    except Error as e:
+        print(f"Erreur : {e}")
     
-    db.close()
+    finally : 
+        db.close()
