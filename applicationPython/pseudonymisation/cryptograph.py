@@ -1,6 +1,6 @@
 from cryptography.fernet import Fernet
-import base64
-import os
+import base64 # Sûrement besoin plus tard dans le dev
+import os # idem
 
 class Crypto : 
     def __init__(self, key) : 

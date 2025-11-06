@@ -1,4 +1,4 @@
-from maladie.py import Maladies 
+from maladie import Maladies 
 
 class MaladieDAO:
     def __init__(self, db):
