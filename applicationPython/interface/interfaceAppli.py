@@ -1,7 +1,7 @@
 from PyQt5.QtWidgets import QWidget, QVBoxLayout, QTabWidget
 from applicationPython.interface.interfaceUS4 import InterfaceUS4
 
-class fenetreAppli(QWidget) :
+class FenetreAppli(QWidget) :
     def __init__(self) :
         QWidget.__init__(self)
 
