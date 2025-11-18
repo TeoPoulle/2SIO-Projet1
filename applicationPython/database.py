@@ -1,6 +1,14 @@
 import mysql.connector 
 
 class Database:
+    _database = None
+    def __new__(cls, host, user, password, database):
+        if not cls._database : 
+            cls._database = super(Database, cls).__new__(cls)
+        else : 
+            print("Connexion à la base de données déjà établie, utilisation de la connexion existante.")
+        return cls._database
+
     def __init__(self, host, user, password, database):
         self.conn = mysql.connector.connect(
             host=host,

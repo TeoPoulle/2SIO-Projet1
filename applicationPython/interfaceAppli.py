@@ -1,9 +1,10 @@
 from PyQt5.QtWidgets import QWidget, QVBoxLayout, QTabWidget
-from applicationPython.interface.interfaceUS4 import InterfaceUS4
+from interfaceUS4_1 import InterfaceUS4_1
 
 class FenetreAppli(QWidget) :
-    def __init__(self) :
+    def __init__(self, db) :
         QWidget.__init__(self)
+        self.db = db
 
         # Fenêtre basique de l'application
         self.resize(1000, 500)
@@ -12,9 +13,9 @@ class FenetreAppli(QWidget) :
 
         # Ajout d'onglets pour faciliter la navigation
         self.onglets = QTabWidget()
-        # Onglet correspondant à l'US4
-        self.ongletUS4 = InterfaceUS4()
-        self.onglets.addTab(self.ongletUS4, "Enregistrer un patient")
+        # Onglet correspondant à l'US4_1
+        self.ongletUS4_1 = InterfaceUS4_1(self.db)
+        self.onglets.addTab(self.ongletUS4_1, "Enregistrer un patient")
 
 
         # 
