@@ -1,4 +1,4 @@
-from patients import Patients
+from patient.patients import Patients
 
 class PatientDAO:
     def __init__(self, db):
@@ -33,3 +33,9 @@ class PatientDAO:
         sql = "DELETE FROM patients WHERE id=%s"
         row = self.db.execute(sql, (id,))
         return f"{row} ligne(s) concernée(s)"
+    
+    def get_id_patient(self, numDossierClinique) : 
+        sql = "SELECT id FROM patients WHERE numDossierClinique=%s"
+        row = self.db.query_one(sql, (numDossierClinique,))
+        patient = row['id']
+        return patient

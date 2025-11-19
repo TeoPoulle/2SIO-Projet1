@@ -1,7 +1,7 @@
-from database import Database
+from bdd.database import Database
 from mysql.connector import Error
 from PyQt5.QtWidgets import QApplication
-from interfaceAppli import FenetreAppli
+from interface.interfaceAppli import FenetreAppli
 import sys
 
 if __name__ == "__main__":

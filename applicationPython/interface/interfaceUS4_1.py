@@ -4,7 +4,7 @@ from PyQt5.QtWidgets import QWidget, QPushButton, QCalendarWidget, \
                             QDialog, QDialogButtonBox, QMessageBox
 from PyQt5.QtCore import QDate
 from datetime import datetime
-from patientDAO import PatientDAO
+from patient.patientDAO import PatientDAO
 
 class InterfaceUS4_1(QWidget) : 
     def __init__(self, db) :
@@ -114,7 +114,6 @@ class InterfaceUS4_1(QWidget) :
             erreurLayout.addWidget(erreurBox, 1, 0, 1, 2)
             erreurBox.accepted.connect(erreurDialog.accept)
             erreurDialog.exec()
-            return
         
         else :
             # Initiation de la fenêtre de confirmation
@@ -173,8 +172,3 @@ class InterfaceUS4_1(QWidget) :
 
     def reject(self) :
         self.validation.close()
-
-
-
-
-
