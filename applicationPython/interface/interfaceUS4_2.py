@@ -91,14 +91,16 @@ class InterfaceUS4_2(QWidget) :
         self.infoDateDiag = self.dateDiagText.text()
         self.infoStade = self.rechStade.currentText()
         self.infoOrgane = self.rechOrgane.currentText()
+
         # Vérification que tous les champs sont remplis
         donneesSaisies.append(self.infoPatient)
         donneesSaisies.append(self.infoMaladie)
         donneesSaisies.append(self.infoDateDiag)
         donneesSaisies.append(self.infoStade)
         donneesSaisies.append(self.infoOrgane)
+
         if "" in donneesSaisies or "------" in donneesSaisies :
-            # Si un champ est vide, on n'ouvre pas la fenêtre de confirmation
+            # Si un champ est vide, on affiche un message d'erreur
             erreurDialog = QDialog(self)
             erreurDialog.setWindowTitle("Erreur de saisie")
             erreurDialog.resize(300, 100)
@@ -111,6 +113,7 @@ class InterfaceUS4_2(QWidget) :
             erreurLayout.addWidget(erreurBox, 1, 0, 1, 2)
             erreurBox.accepted.connect(erreurDialog.accept)
             erreurDialog.exec()
+
         else : 
             # Initiation de la fenêtre de validation
             self.validation = QDialog(self)
@@ -119,13 +122,14 @@ class InterfaceUS4_2(QWidget) :
             validLayout = QGridLayout()
             self.validation.setLayout(validLayout)
 
-            # Affichage des informations saisies pour confirmation
+            # Récupération des informations saisies pour confirmation
             patientLabel = QLabel(f"Numéro de dossier patient : {self.infoPatient}")
             maladieLabel = QLabel(f"Maladie : {self.infoMaladie}")
             dateDiagLabel = QLabel(f"Date de diagnostic : {self.infoDateDiag}")
             stadeLabel = QLabel(f"Stade de la maladie : {self.infoStade}")
             organeLabel = QLabel(f"Organe affecté : {self.infoOrgane}")
 
+            # Affichage des informations saisies pour confirmation
             validLayout.addWidget(patientLabel, 0, 0, 1, 2)
             validLayout.addWidget(maladieLabel, 1, 0, 1, 2)
             validLayout.addWidget(dateDiagLabel, 2, 0, 1, 2)
@@ -147,6 +151,7 @@ class InterfaceUS4_2(QWidget) :
         infoDateDiag = infoDateDiag.strftime("%Y-%m-%d") # Format compatible avec MySQL
         infoStade = self.stadeDAO.get_id_stade(infoStade)
         infoOrgane = self.organeDAO.get_id_organe(infoOrgane)
+
         # Insertion dans la table patientmaladie
         self.patientMaladieDAO.add_patientmaladie(infoPatient, infoMaladie, infoDateDiag, infoStade, infoOrgane)
 
@@ -160,6 +165,7 @@ class InterfaceUS4_2(QWidget) :
         self.rechOrgane.setCurrentIndex(0)
         self.validation.close()
 
+        # Affichage d'un message de confirmation
         self.confirmation = QMessageBox(self)
         self.confirmation.setWindowTitle("Enregistrement réussi")
         self.confirmation.resize(300, 100)

@@ -36,6 +36,7 @@ class InterfaceUS4_1(QWidget) :
         self.dateNaisSelect = QLabel("Date sélectionnée : *vide*")
         self.dateNaisText = QLabel()
         self.numDossier = QLineEdit("DCL-")
+
         # Pour définir le sexe du patient
         sexe = QGroupBox()
         sexeLayout = QHBoxLayout(sexe)
@@ -64,6 +65,7 @@ class InterfaceUS4_1(QWidget) :
 
         # Pour afficher et obtenir la date sélectionnée
         self.dateNais.clicked.connect(self.afficherDate)
+
         # Pour obtenir la valeur du bouton sélectionné
         self.sexe.buttonClicked[int].connect(self.afficherSexe)
 
@@ -94,14 +96,16 @@ class InterfaceUS4_1(QWidget) :
         self.dateNaisValidee = self.dateNaisText.text()
         self.sexeValide = self.sexeText.text()
         self.numDossValide = self.numDossier.text()
+
         # Vérification que tous les champs sont remplis
         donneesSaisies.append(self.nomValide)
         donneesSaisies.append(self.prenomValide)
         donneesSaisies.append(self.dateNaisValidee)
         donneesSaisies.append(self.sexeValide)
         donneesSaisies.append(self.numDossValide)
+
         if "" in donneesSaisies :
-            # Si un champ est vide, on n'ouvre pas la fenêtre de confirmation
+            # Si un champ est vide, on affiche un message d'erreur
             erreurDialog = QDialog(self)
             erreurDialog.setWindowTitle("Erreur de saisie")
             erreurDialog.resize(300, 100)
@@ -122,22 +126,26 @@ class InterfaceUS4_1(QWidget) :
             self.validation.resize(500, 250)
             validationLayout = QGridLayout()
             self.validation.setLayout(validationLayout)
-            # Affichage des données saisies dans la fenêtre de confirmation
+
+            # Récupération des données saisies dans la fenêtre de confirmation
             validNom = QLabel(f"Nom : {self.nomValide}")
             validPrenom = QLabel(f"Prénom : {self.prenomValide}")
             validDateNais = QLabel(f"Date de naissance : {self.dateNaisValidee}")
             validSexe = QLabel(f"Sexe : {self.sexeValide}")
             validNumDoss = QLabel(f"Numéro de dossier : {self.numDossValide}")
-            # Ajout des champs sur la fenêtre de confirmation
+
+            # Affichage des champs sur la fenêtre de confirmation
             validationLayout.addWidget(validNom, 0, 0, 1, 2)
             validationLayout.addWidget(validPrenom, 1, 0, 1, 2)
             validationLayout.addWidget(validDateNais, 2, 0, 1, 2)
             validationLayout.addWidget(validSexe, 3, 0, 1, 2)
             validationLayout.addWidget(validNumDoss, 4, 0, 1, 2)
+
             # Bouton de confirmation 
             confirmButton = QDialogButtonBox.Ok | QDialogButtonBox.Cancel
             self.confirmBox = QDialogButtonBox(confirmButton)
             validationLayout.addWidget(self.confirmBox, 5, 0, 1, 2)
+
             # Connexion des boutons aux fonctions adaptées
             self.confirmBox.accepted.connect(lambda: self.accept(self.nomValide, self.prenomValide, self.dateNaisValidee, self.sexeValide, self.numDossValide)) # 
             self.confirmBox.rejected.connect(self.reject)
@@ -147,6 +155,7 @@ class InterfaceUS4_1(QWidget) :
         dateNaisPat = datetime.strptime(dateNaisPat, "%d/%m/%Y") # Conversion de str à objet datetime
         dateNaisPat = dateNaisPat.strftime("%Y-%m-%d") # Format compatible avec MySQL
         self.patientDAO.add_patient(nomPat, prenomPat, dateNaisPat, sexe[0], numDossierClinique)
+
         # Réinitialisation des champs après validation
         self.nom.clear()
         self.prenom.clear()
@@ -163,6 +172,7 @@ class InterfaceUS4_1(QWidget) :
         self.numDossier.setText("DCL-")
         self.validation.close()
 
+        # Affichage d'un message de confirmation
         self.confirmation = QMessageBox(self)
         self.confirmation.setWindowTitle("Enregistrement réussi")
         self.confirmation.resize(300, 100)
