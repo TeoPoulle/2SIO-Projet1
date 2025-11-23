@@ -8,7 +8,7 @@ class Database:
         else : 
             print("Connexion à la base de données déjà établie, utilisation de la connexion existante.")
         return cls._database
-
+    
     def __init__(self, host, user, password, database):
         self.conn = mysql.connector.connect(
             host=host,

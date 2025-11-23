@@ -1,6 +1,7 @@
 from PyQt5.QtWidgets import QWidget, QVBoxLayout, QTabWidget
 from interface.interfaceUS4_1 import InterfaceUS4_1
 from interface.interfaceUS4_2 import InterfaceUS4_2
+from interface.interfaceUS4_3 import InterfaceUS4_3
 
 class FenetreAppli(QWidget) :
     def __init__(self, db) :
@@ -19,7 +20,10 @@ class FenetreAppli(QWidget) :
         self.onglets.addTab(self.ongletUS4_1, "Enregistrer un patient")
 
         self.ongletsUS4_2 = InterfaceUS4_2(self.db)
-        self.onglets.addTab(self.ongletsUS4_2, "Enregistrer une maladie par patient")
+        self.onglets.addTab(self.ongletsUS4_2, "Enregistrer la maladie d'un patient")
+
+        self.ongletsUS4_3 = InterfaceUS4_3(self.db)
+        self.onglets.addTab(self.ongletsUS4_3, "Inclure un patient dans une étude")
 
 
         # 

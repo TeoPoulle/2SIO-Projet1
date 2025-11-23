@@ -3,6 +3,8 @@ from PyQt5.QtWidgets import QWidget, QPushButton, QCalendarWidget, \
                             QComboBox, QDialog, QDialogButtonBox, QMessageBox
 from PyQt5.QtCore import QDate
 from datetime import datetime
+from interface.erreurSaisie import ErreurSaisie
+from interface.confirmation import Confirmation
 from patient.patientDAO import PatientDAO
 from maladie.maladieDAO import MaladieDAO
 from stade.stadedao import StadeDAO
@@ -100,19 +102,8 @@ class InterfaceUS4_2(QWidget) :
         donneesSaisies.append(self.infoOrgane)
 
         if "" in donneesSaisies or "------" in donneesSaisies :
-            # Si un champ est vide, on affiche un message d'erreur
-            erreurDialog = QDialog(self)
-            erreurDialog.setWindowTitle("Erreur de saisie")
-            erreurDialog.resize(300, 100)
-            erreurLayout = QGridLayout()
-            erreurDialog.setLayout(erreurLayout)
-            erreurLabel = QLabel("Tous les champs doivent être remplis avant validation.")
-            erreurLayout.addWidget(erreurLabel, 0, 0, 1, 2)
-            okButton = QDialogButtonBox.Ok
-            erreurBox = QDialogButtonBox(okButton)
-            erreurLayout.addWidget(erreurBox, 1, 0, 1, 2)
-            erreurBox.accepted.connect(erreurDialog.accept)
-            erreurDialog.exec()
+            # Objet qui permet d'afficher un message d'erreur
+            self.erreur = ErreurSaisie()
 
         else : 
             # Initiation de la fenêtre de validation
@@ -123,7 +114,7 @@ class InterfaceUS4_2(QWidget) :
             self.validation.setLayout(validLayout)
 
             # Récupération des informations saisies pour confirmation
-            patientLabel = QLabel(f"Numéro de dossier patient : {self.infoPatient}")
+            patientLabel = QLabel(f"Information patient : {self.patientDAO.get_nom_prenom(self.infoPatient)}, {self.infoPatient}")
             maladieLabel = QLabel(f"Maladie : {self.infoMaladie}")
             dateDiagLabel = QLabel(f"Date de diagnostic : {self.infoDateDiag}")
             stadeLabel = QLabel(f"Stade de la maladie : {self.infoStade}")
@@ -165,13 +156,8 @@ class InterfaceUS4_2(QWidget) :
         self.rechOrgane.setCurrentIndex(0)
         self.validation.close()
 
-        # Affichage d'un message de confirmation
-        self.confirmation = QMessageBox(self)
-        self.confirmation.setWindowTitle("Enregistrement réussi")
-        self.confirmation.resize(300, 100)
-        self.confirmation.setText("Le patient malade a été enregistré avec succès.")
-        self.confirmation.setIcon(QMessageBox.Information)
-        self.confirmation.exec()
+        # Affichage d'un message de confirmation grâce à la classe Confirmation
+        self.confirmation = Confirmation("Le patient malade a été enregistré avec succès.")
     
     def reject(self) :
         self.validation.close()

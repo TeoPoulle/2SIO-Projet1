@@ -1,6 +1,5 @@
 from cryptography.fernet import Fernet
-import base64 # Sûrement besoin plus tard dans le dev
-import os # idem
+import hashlib
 
 class Crypto : 
     def __init__(self, key) : 
@@ -17,13 +16,20 @@ class Crypto :
         # Encodage des données en octet car Fernet ne comprend rien d'autre
         dataBytes = data.encode('utf-8')
         # Chiffrement des octets obtenus afin de chiffrer les données au final
-        encryptedDatas = self._fernet.encrypt(dataBytes)
-        return encryptedDatas
+        self.encryptedDatas = self._fernet.encrypt(dataBytes)
+        return self.encryptedDatas
 
     def decrypt(self, encryptedDatas) : 
         """Fonction de déchiffrement des données"""
         # Littéralement la fonction inverse de encrypt(self, data)
-        decryptedDatas = self._fernet.decrypt(encryptedDatas)
-        data = decryptedDatas.decode('utf-8')
+        self.decryptedDatas = self._fernet.decrypt(encryptedDatas)
+        data = self.decryptedDatas.decode('utf-8')
         return data
+    
+    def hash(self, data) : 
+        """Fonction de hachage SHA-256 des données"""
+        sha256_hash = hashlib.sha256()
+        sha256_hash.update(data.encode('utf-8'))
+        hashed_data = sha256_hash.hexdigest()
+        return hashed_data
 

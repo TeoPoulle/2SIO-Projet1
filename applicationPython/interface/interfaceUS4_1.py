@@ -4,6 +4,8 @@ from PyQt5.QtWidgets import QWidget, QPushButton, QCalendarWidget, \
                             QDialog, QDialogButtonBox, QMessageBox
 from PyQt5.QtCore import QDate
 from datetime import datetime
+from interface.erreurSaisie import ErreurSaisie
+from interface.confirmation import Confirmation
 from patient.patientDAO import PatientDAO
 
 class InterfaceUS4_1(QWidget) : 
@@ -105,19 +107,8 @@ class InterfaceUS4_1(QWidget) :
         donneesSaisies.append(self.numDossValide)
 
         if "" in donneesSaisies :
-            # Si un champ est vide, on affiche un message d'erreur
-            erreurDialog = QDialog(self)
-            erreurDialog.setWindowTitle("Erreur de saisie")
-            erreurDialog.resize(300, 100)
-            erreurLayout = QGridLayout()
-            erreurDialog.setLayout(erreurLayout)
-            erreurLabel = QLabel("Tous les champs doivent être remplis avant validation.")
-            erreurLayout.addWidget(erreurLabel, 0, 0, 1, 2)
-            okButton = QDialogButtonBox.Ok
-            erreurBox = QDialogButtonBox(okButton)
-            erreurLayout.addWidget(erreurBox, 1, 0, 1, 2)
-            erreurBox.accepted.connect(erreurDialog.accept)
-            erreurDialog.exec()
+            # Objet qui permet d'afficher un message d'erreur
+            self.erreur = ErreurSaisie()
         
         else :
             # Initiation de la fenêtre de confirmation
@@ -172,13 +163,8 @@ class InterfaceUS4_1(QWidget) :
         self.numDossier.setText("DCL-")
         self.validation.close()
 
-        # Affichage d'un message de confirmation
-        self.confirmation = QMessageBox(self)
-        self.confirmation.setWindowTitle("Enregistrement réussi")
-        self.confirmation.resize(300, 100)
-        self.confirmation.setText("Le patient a été enregistré avec succès.")
-        self.confirmation.setIcon(QMessageBox.Information)
-        self.confirmation.exec()
-
+        # Affichage d'un message de confirmation grâce à la classe Confirmation
+        self.confirmation = Confirmation("Le patient a été enregistré avec succès.")
+        
     def reject(self) :
         self.validation.close()
