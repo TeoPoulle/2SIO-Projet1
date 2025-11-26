@@ -7,7 +7,7 @@ from interface.erreurSaisie import ErreurSaisie
 from interface.confirmation import Confirmation
 from patient.patientDAO import PatientDAO
 from maladie.maladieDAO import MaladieDAO
-from stade.stadedao import StadeDAO
+from applicationPython.stade.stadeDAO import StadeDAO
 from organe.organeDAO import OrganeDAO
 from patientmaladie.patientsMaladiesDAO import PatientsMaladiesDAO
 

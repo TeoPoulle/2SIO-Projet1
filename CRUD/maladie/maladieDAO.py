@@ -1,4 +1,4 @@
-from maladie import Maladies 
+from maladie.maladie import Maladies 
 
 class MaladieDAO:
     def __init__(self, db):
@@ -31,3 +31,15 @@ class MaladieDAO:
         sql = "DELETE FROM maladies WHERE id=%s"
         row = self.db.execute(sql, (id,))
         return f"{row} ligne(s) concernée(s)"
+
+    def get_maladie_by_name(self, nomMaladie) :
+        sql = "SELECT id, nomMaladie FROM maladies WHERE nomMaladie=%s"
+        row = self.db.query_one(sql, (nomMaladie,))
+        maladie = Maladies(row['id'], row['nomMaladie'])
+        return maladie
+    
+    def get_id_maladie(self, nomMaladie) : 
+        sql = "SELECT id FROM maladies WHERE nomMaladie=%s"
+        row = self.db.query_one(sql, (nomMaladie,))
+        maladie = row['id']
+        return maladie
