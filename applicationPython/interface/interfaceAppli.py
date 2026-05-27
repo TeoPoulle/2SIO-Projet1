@@ -2,6 +2,7 @@ from PyQt5.QtWidgets import QWidget, QVBoxLayout, QTabWidget
 from interface.interfaceUS4_1 import InterfaceUS4_1
 from interface.interfaceUS4_2 import InterfaceUS4_2
 from interface.interfaceUS4_3 import InterfaceUS4_3
+from interface.interfaceUS14 import InterfaceUS14
 
 class FenetreAppli(QWidget) :
     def __init__(self, db) :
@@ -24,6 +25,9 @@ class FenetreAppli(QWidget) :
 
         self.ongletsUS4_3 = InterfaceUS4_3(self.db)
         self.onglets.addTab(self.ongletsUS4_3, "Inclure un patient dans une étude")
+
+        self.ongletUS4_4 = InterfaceUS14(self.db)
+        self.onglets.addTab(self.ongletUS4_4, "Graphiques d'évolution")
 
 
         # 

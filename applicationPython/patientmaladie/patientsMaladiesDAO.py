@@ -9,6 +9,26 @@ class PatientsMaladiesDAO:
         rows = self.db.query(sql)
         patientsmaladies = [PatientsMaladies(row['id'], row['nomPat'], row['nomMaladie'], row['dateDiagnostic'], row['nomStade'], row['nomOrgane']) for row in rows]
         return patientsmaladies
+
+    def get_repartition_stades_par_groupe(self):
+        sql = "SELECT PM.idPatient, S.nomStade FROM patientsmaladies AS PM JOIN stades AS S ON S.id = PM.idStade"
+        rows = self.db.query(sql)
+
+        repartition = {
+            "test": {"II": 0, "III": 0},
+            "controle": {"II": 0, "III": 0},
+        }
+
+        for row in rows:
+            stade = row['nomStade'].replace("Stade ", "")
+            if stade in ("II", "III"):
+                if row['idPatient'] % 2 == 0:
+                    groupe = "test"
+                else:
+                    groupe = "controle"
+                repartition[groupe][stade] += 1
+
+        return repartition
     
     def get_patientmaladie(self, id) :         # Sélection d'un patient  précis atteint d'une maladie précise (en fonction de sa clé primaire)
         sql = "SELECT PM.id, P.nomPat, M.nomMaladie, dateDiagnostic, S.nomStade, O.nomOrgane FROM patientsmaladies AS PM JOIN patients AS P ON P.id = PM.idPatient JOIN maladies AS M ON M.id = PM.idMaladie JOIN stades AS S ON S.id = PM.idStade JOIN organes AS O ON O.id = PM.idOrgane WHERE PM.id=%s" 

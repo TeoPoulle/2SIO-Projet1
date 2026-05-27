@@ -10,13 +10,13 @@ class PatientDAO:
     def get_all_patients(self):
         sql = "SELECT * FROM patients"
         rows = self.db.query(sql)
-        patients = [Patients(row['id'], self._chiffrement.decrypt(row['nomPat']), self._chiffrement.decrypt(row['prenomPat']), self._chiffrement.decrypt(row['dateNaisPat']), self._chiffrement.decrypt(row['sexe']), row['numDossierClinique']) for row in rows]
+        patients = [Patients(row['id'], self._chiffrement.decrypt(row['nomPat']), self._chiffrement.decrypt(row['prenomPat']), self._chiffrement.decrypt(row['dateNaisPat']), self._chiffrement.decrypt(row['sexe']), self._chiffrement.decrypt(row['numDossierClinique'])) for row in rows]
         return patients
     
     def get_patient(self, numDossierClinique) :
         sql = "SELECT id, nomPat, prenomPat, dateNaisPat, sexe, numDossierClinique FROM patients WHERE numDossierClinique=%s"
         row = self.db.query_one(sql, (self._chiffrement.hash(numDossierClinique),))
-        patient = Patients(row['id'], self._chiffrement.decrypt(row['nomPat']), self._chiffrement.decrypt(row['prenomPat']), self._chiffrement.decrypt(row['dateNaisPat']), self._chiffrement.decrypt(row['sexe']), row['numDossierClinique'])
+        patient = Patients(row['id'], self._chiffrement.decrypt(row['nomPat']), self._chiffrement.decrypt(row['prenomPat']), self._chiffrement.decrypt(row['dateNaisPat']), self._chiffrement.decrypt(row['sexe']), self._chiffrement.decrypt(row['numDossierClinique']))
         return patient
     
     # A voir plus tard
@@ -25,7 +25,6 @@ class PatientDAO:
         parametres = (self._chiffrement.encrypt(nomPat), self._chiffrement.encrypt(prenomPat), self._chiffrement.encrypt(dateNaisPat), self._chiffrement.encrypt(sexe), self._chiffrement.hash(numDossierClinique), id)
         row = self.db.execute(sql, parametres)
         return f"{row} ligne(s) affectée(s)"
-    
 
     def add_patient(self, nomPat, prenomPat, dateNaisPat, sexe, numDossierClinique) :   
         sql = "INSERT INTO patients (nomPat, prenomPat, dateNaisPat, sexe, numDossierClinique) VALUES (%s, %s, %s, %s, %s)"
